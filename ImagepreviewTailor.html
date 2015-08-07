@@ -1,0 +1,55 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<link rel="stylesheet" href="css/jquery.Jcrop.min.css" type="text/css">
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.Jcrop.min.js"></script>
+<script type="text/javascript">
+
+//预览函数
+function preImg(sourceId, targetId) {
+
+	if (typeof FileReader === 'undefined') {
+		alert('Your browser does not support FileReader...');
+		return;
+	}
+	var reader = new FileReader();
+
+	reader.onload = function(e) {
+		var img = document.getElementById(targetId);
+		img.src = this.result;
+
+		//对预览的图片添加裁剪插件
+		$('#'+targetId).Jcrop({
+	        aspectRatio:1,
+	        onSelect:updateCoords,
+        });
+
+	}
+	reader.readAsDataURL(document.getElementById(sourceId).files[0]);
+
+}
+//获取裁剪的相关参数
+function updateCoords(c){
+    $("#x").val(c.x);
+    $("#y").val(c.y);
+    $("#w").val(c.w);
+    $("#h").val(c.h);
+
+}
+
+
+</script>
+</head>
+<body>
+<form action="">
+	<input type="file" name="imgOne" id="imgOne" onchange="preImg(this.id,'imgPre');" />
+	<img id="imgPre" src="" style="display: block;"/> 
+	<input type="hidden" id="x" name="x">
+    <input type="hidden" id="y" name="y">
+    <input type="hidden" id="w" name="w">
+    <input type="hidden" id="h" name="h">
+</form>
+</body>
+</html>
